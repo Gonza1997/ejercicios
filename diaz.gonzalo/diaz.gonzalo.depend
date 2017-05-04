@@ -1,0 +1,13 @@
+# depslib dependency file v1.0
+1493908086 source:d:\diaz.gonzalo\main.c
+	<stdio.h>
+	<stdlib.h>
+	"estacionamiento.h"
+
+1493908019 d:\diaz.gonzalo\estacionamiento.h
+
+1493908037 source:d:\diaz.gonzalo\estacionamiento.c
+	"estacionamiento.h"
+	<stdio.h>
+	<stdlib.h>
+
