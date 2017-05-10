@@ -13,7 +13,8 @@ void menu()
     printf("2- Modificacion del Duenio\n");
     printf("3- Ingreso del Automovil\n");
     printf("4- Egreso del automovil\n\n");
-    printf("5- Salir\n");
+    printf("5- Informar.\n");
+    printf("6- \nSalir");
 
 }
 
@@ -48,7 +49,7 @@ void alta(ePropietario duenio[])
 
 void ingreso(ePropietario duenio[], eAuto autos[])
 {
-    int lugar, i, j, opcion, aux, flag = 0;
+    int lugar, i, aux, opcion, aux2, flag = 0;
     lugar = espacio(duenio, T);
     if(lugar != '-1')
     {
@@ -78,20 +79,11 @@ void ingreso(ePropietario duenio[], eAuto autos[])
         gets(aux);
         fflush(stdin);
 
-        while(flag != 1)
+        aux2 = buscarDuenio(duenio[], aux, autos[]);
+        while(aux2 != -1)
         {
-
-            for(i=0; i<T; i++)
-            {
-                if(aux == duenio[i].id)
-                {
-                    flag = 1;
-                    autos[lugar].id = aux;
-                    break;
-                }
-            }
-            printf("No se encontro al duenio del auto. Reingrese\n");
-
+            printf("No se encontro al duenio del auto. Reingrese");
+            aux2 = buscarDuenio(duenio[], aux, autos[]);
         }
         printf("Ingrese el horario de entrada: ");
         scanf("%d", &aux);
@@ -179,15 +171,20 @@ int validarInt(int numero, int mini, int maxi)
     return numero;
 }
 
-int buscarDuenio(ePropietario duenio[], eAuto autos[])
+int buscarDuenio(ePropietario duenio[], int aux, eAuto autos[])
 {
-    int lugar = -1, i;
-    for(i=0; i<tam; i++)
+    int i;
+    int idRetorno = -1;
+    for(i=0; i<T; i++)
     {
-        if(duenio[i].estado == 0)
-        {
-            lugar = i;
-            break;
-        }
+
+            if(aux == duenio[i].id)
+            {
+                idRetorno = duenio[i].id;
+                break;
+            }
+
+
     }
+    return idRetorno;
 }
