@@ -25,4 +25,5 @@ void alta(ePropietario duenio[]);
 void ingreso(ePropietario duenio[], eAuto autos[]);
 void baja(ePropietario duenio[]);
 void modificar(ePropietario duenio[]);
-int validarInt(int numero, int max, int min);
+int validarInt(int numero, int mini, int maxi);
+int buscarDuenio(ePropietario duenio[], eAuto autos[]);

@@ -7,7 +7,7 @@
 #define AUDI 3
 #define OTRO 4
 
-
+void mostrar(ePropietario());
 
 int main()
 {
@@ -43,16 +43,31 @@ int main()
                 printf("Primero debe realizar una alta.");
             break;
         case 4:
+            if(flag != 0)
             printf("Ingrese la patente del auto a retirar: ");
             gets(aux);
 
             break;
         case 5:
+
+            break;
+        case 6:
             seguir = 'n';
             break;
+
 
         }
     }
 }
 
-
+/*void informar(ePropietario duenio())
+{
+    int i;
+    for(i=0; i<T; i++)
+    {
+        if(duenio[i].estado == 1)
+        {
+            printf();
+        }
+    }
+}*/

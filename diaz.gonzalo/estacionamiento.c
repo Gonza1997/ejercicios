@@ -48,7 +48,7 @@ void alta(ePropietario duenio[])
 
 void ingreso(ePropietario duenio[], eAuto autos[])
 {
-    int lugar, i, j, opcion;
+    int lugar, i, j, opcion, aux, flag = 0;
     lugar = espacio(duenio, T);
     if(lugar != '-1')
     {
@@ -57,29 +57,47 @@ void ingreso(ePropietario duenio[], eAuto autos[])
         fflush(stdin);
         printf("Ingrese la marca del auto: (1- Alpha Romeo, 2- Ferrari, 3- Audi, 4- Otros)");
         scanf("%d", &opcion);
+        opcion = validarInt(opcion, 1, 4);
         switch(opcion)
         {
-            case 1:
-        autos[lugar].marca = ALPHA_ROMEO;
+        case 1:
+            autos[lugar].marca = ALPHA_ROMEO;
             break;
-    case 2:
-        autos[lugar].marca = FERRARI;
-        break;
-    case 3:
-        autos[lugar].marca = AUDI;
+        case 2:
+            autos[lugar].marca = FERRARI;
             break;
-    case 4:
-        autos[lugar].marca = OTRO;
-        break;
+        case 3:
+            autos[lugar].marca = AUDI;
+            break;
+        case 4:
+            autos[lugar].marca = OTRO;
+            break;
         }
         fflush(stdin);
         printf("Ingrese la ID del dueño: ");
-        gets(autos[lugar].id);
+        gets(aux);
         fflush(stdin);
+
+        while(flag != 1)
+        {
+
+            for(i=0; i<T; i++)
+            {
+                if(aux == duenio[i].id)
+                {
+                    flag = 1;
+                    autos[lugar].id = aux;
+                    break;
+                }
+            }
+            printf("No se encontro al duenio del auto. Reingrese\n");
+
+        }
         printf("Ingrese el horario de entrada: ");
-        scanf("%d", &autos[lugar].hora);
-        autos[lugar].hora = validarInt(autos[lugar].hora, 0, 25);
+        scanf("%d", &aux);
+        autos[lugar].hora = validarInt(aux, 1, 24);
         fflush(stdin);
+
 
     }
 }
@@ -150,15 +168,26 @@ int espacio(ePropietario persona[], int tam)
     return lugar;
 }
 
-int validarInt(int numero, int max, int min)
+int validarInt(int numero, int mini, int maxi)
 {
     int i;
-    while(numero < min || numero > max)
+    while(numero <= mini || numero >= maxi)
     {
-        printf("Ingrese un numero valido: ");
+        printf("Reingrese un dato valido.");
         scanf("%d", &numero);
     }
-
     return numero;
+}
 
+int buscarDuenio(ePropietario duenio[], eAuto autos[])
+{
+    int lugar = -1, i;
+    for(i=0; i<tam; i++)
+    {
+        if(duenio[i].estado == 0)
+        {
+            lugar = i;
+            break;
+        }
+    }
 }
