@@ -1,0 +1,186 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define FALLA_3G 1
+#define FALLA_4G 2
+#define FALLA_EQUIPO 3
+
+#define INDETERMINADO 1
+#define EN_CURSO 2
+#define SIN_RESOLVER 3
+#define RESUELTO 4
+
+#define DISPONIBLE 0
+#define NO_DISPONIBLE 1
+
+
+
+
+typedef struct
+{
+    int idLlamada;
+    int idAbonado;
+    int motivo;
+    int estado;
+    int duracion;
+    int flagEstado;
+
+} sReclamo;
+
+typedef struct
+{
+    unsigned int idAbonado;
+    unsigned int numero;
+    char nombre[50];
+    char apellido[50];
+    int flagEstado;
+
+} sAbonado;
+
+void cargarAbonados(sAbonado[], int);
+void inicializarReclamos(sReclamo[], int);
+int crearReclamo(sReclamo[], int, int, sAbonado [], int );
+int buscarLugar(sReclamo[],int);
+int buscarAbonadoxTelefono(sAbonado[],int,int);
+sReclamo newReclamo(int, int, int);
+
+int main()
+{
+    sAbonado abonados[5];
+    sReclamo reclamos[5];
+    int guardo;
+    int i;
+    int ultimoId=1;
+
+    inicializarReclamos(reclamos, 5);
+    cargarAbonados(abonados, 5);
+
+
+    //realizo una llamada
+
+    for(i=0; i<6; i++)
+    {
+        guardo = crearReclamo(reclamos,5, ultimoId, abonados, 5);
+        if(guardo!=-1)
+        {
+            printf("Reclamo cargado correctamente");
+            ultimoId++;
+        }
+        else
+        {
+            printf("Error en reclamo... llame luego");
+        }
+    }
+
+
+
+
+
+    printf("Hello world!\n");
+    return 0;
+}
+
+void cargarAbonados(sAbonado abonados[], int tamA)
+{
+    int idAbonado[5]= {1,2,3,4,5};
+    int numero[5]= {222,333,444,555,666};
+    char nombre[5][50]= {"jose","luisa","maria","jorge","luis"};
+    int flagEstado[5]= {1,1,1,1,1};
+    int i;
+
+    for(i=0; i<tamA; i++)
+    {
+        abonados[i].idAbonado=idAbonado[i];
+        abonados[i].flagEstado=flagEstado[i];
+        abonados[i].numero = numero[i];
+        strcpy(abonados[i].nombre, nombre[i]);
+    }
+}
+void inicializarReclamos(sReclamo reclamos[], int tamR)
+{
+    int i;
+    for(i=0; i<tamR; i++)
+    {
+        reclamos[i].estado = INDETERMINADO;
+        reclamos[i].flagEstado = DISPONIBLE;
+    }
+}
+int crearReclamo(sReclamo reclamos[], int tamR, int idLlamada, sAbonado abonados[], int tamA)
+{
+    int hayLugar;
+    int motivo;
+    int numero;
+    int idAbonado;
+    hayLugar = buscarLugar(reclamos, tamR);
+    if(hayLugar!=-1)
+    {
+
+
+        printf("Ingrese numero de telefono: ");
+        scanf("%d", &numero);
+        idAbonado = buscarAbonadoxTelefono(abonados,tamA,numero);
+        if(idAbonado!=-1)
+        {
+
+            printf("Cual es el motivo de su llamada: 1-3g...2-4g...3-Equipo");
+            scanf("%d", &motivo);
+
+            reclamos[hayLugar]=newReclamo(idLlamada,idAbonado,motivo);
+
+
+        }
+        else
+        {
+            printf("Numero inexistente!!");
+        }
+
+    }
+    else
+    {
+        printf("Todas las lineas estan ocupadas!!!!!");
+    }
+
+    return hayLugar;
+}
+
+sReclamo newReclamo(int idLlamada, int idAbonado, int  motivo)
+{
+    sReclamo unReclamo;
+    unReclamo.idLlamada = idLlamada;
+    unReclamo.idAbonado = idAbonado;
+    unReclamo.motivo = motivo;
+    unReclamo.estado = EN_CURSO;
+    unReclamo.flagEstado = NO_DISPONIBLE;
+    return unReclamo;
+}
+
+int buscarLugar(sReclamo reclamos[],int tamR)
+{
+    int lugar = -1;
+    int i;
+    for(i=0; i<tamR; i++)
+    {
+        if(reclamos[i].flagEstado==DISPONIBLE)
+        {
+            lugar = i;
+            break;
+        }
+    }
+
+
+    return lugar;
+}
+int buscarAbonadoxTelefono(sAbonado abonados[],int tamA, int telefono)
+{
+    int i;
+    int idRetorno = -1;
+    for(i=0; i<tamA; i++)
+    {
+        if(telefono == abonados[i].numero)
+        {
+            idRetorno = abonados[i].idAbonado;
+            break;
+        }
+    }
+    return idRetorno;
+}
