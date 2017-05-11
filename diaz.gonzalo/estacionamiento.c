@@ -1,20 +1,21 @@
 #include "estacionamiento.h"
-#define T 20
+#define T 3
 #include <stdio.h>
 #include <stdlib.h>
-#define ALPHA_ROMEO 1
-#define FERRARI 2
-#define AUDI 3
-#define OTRO 4
+#include <string.h>
+#define ALPHA_ROMEO
+#define FERRARI
+#define AUDI
+#define OTRO
 
 void menu()
 {
     printf("\n1- Alta del Duenio\n");
     printf("2- Modificacion del Duenio\n");
     printf("3- Ingreso del Automovil\n");
-    printf("4- Egreso del automovil\n\n");
+    printf("4- Egreso del automovil\n");
     printf("5- Informar.\n");
-    printf("6- \nSalir");
+    printf("\n6- Salir");
 
 }
 
@@ -54,37 +55,33 @@ void ingreso(ePropietario duenio[], eAuto autos[])
     if(lugar != '-1')
     {
         printf("Ingrese la patente del auto: ");
-        scanf("%d", &autos[lugar].patente);
+        gets(autos[lugar].patente);
         fflush(stdin);
         printf("Ingrese la marca del auto: (1- Alpha Romeo, 2- Ferrari, 3- Audi, 4- Otros)");
         scanf("%d", &opcion);
+        fflush(stdin);
         opcion = validarInt(opcion, 1, 4);
         switch(opcion)
         {
         case 1:
-            autos[lugar].marca = ALPHA_ROMEO;
+            strcpy(autos[lugar].marca, "ALPHA_ROMEO");
             break;
         case 2:
-            autos[lugar].marca = FERRARI;
+            strcpy(autos[lugar].marca, "FERRARI");
             break;
         case 3:
-            autos[lugar].marca = AUDI;
+            strcpy(autos[lugar].marca, "AUDI");
             break;
         case 4:
-            autos[lugar].marca = OTRO;
+            strcpy(autos[lugar].marca, "OTRO");
             break;
         }
-        fflush(stdin);
-        printf("Ingrese la ID del dueño: ");
-        gets(aux);
-        fflush(stdin);
 
-        aux2 = buscarDuenio(duenio[], aux, autos[]);
-        while(aux2 != -1)
-        {
-            printf("No se encontro al duenio del auto. Reingrese");
-            aux2 = buscarDuenio(duenio[], aux, autos[]);
-        }
+        printf("Ingrese la ID del dueño: ");
+        scanf("%d", &aux);
+        fflush(stdin);
+        autos[lugar].id = buscarDuenio(aux, duenio);
+
         printf("Ingrese el horario de entrada: ");
         scanf("%d", &aux);
         autos[lugar].hora = validarInt(aux, 1, 24);
@@ -150,7 +147,7 @@ int espacio(ePropietario persona[], int tam)
     int lugar = -1, i;
     for(i=0; i<tam; i++)
     {
-        if(persona[i].estado == 0)
+        if(persona[i].estado =! 1)
         {
             lugar = i;
             break;
@@ -163,28 +160,178 @@ int espacio(ePropietario persona[], int tam)
 int validarInt(int numero, int mini, int maxi)
 {
     int i;
-    while(numero <= mini || numero >= maxi)
+    while(numero < mini || numero > maxi)
     {
         printf("Reingrese un dato valido.");
         scanf("%d", &numero);
+        fflush(stdin);
     }
     return numero;
 }
 
-int buscarDuenio(ePropietario duenio[], int aux, eAuto autos[])
+int buscarDuenio(int aux, ePropietario duenio[])
 {
-    int i;
-    int idRetorno = -1;
+    int i, flag = 0;
+
     for(i=0; i<T; i++)
     {
 
-            if(aux == duenio[i].id)
-            {
-                idRetorno = duenio[i].id;
-                break;
-            }
+        if(aux == duenio[i].id)
+        {
+            printf("Se ha encontrado al duenio.");
+            flag = 1;
+            break;
+        }
 
 
     }
-    return idRetorno;
+    if(flag != 1)
+    {
+        printf("El duenio no existe. Reingrese");
+        scanf("%d", &aux);
+        fflush(stdin);
+        buscarDuenio(aux, duenio);
+    }
+    return aux;
+
 }
+
+int buscarAuto(char aux[], eAuto autos[])
+{
+    int i, flag = 0;
+
+    for(i=0; i<T; i++)
+    {
+
+        if(strcmp(aux, autos[i].patente) == 0)
+        {
+            printf("Se ha encontrado el auto.");
+            flag = 1;
+            return i;
+        }
+
+
+    }
+    if(flag != 1)
+    {
+        printf("El auto no existe. Reingrese");
+        gets(aux);
+        buscarAuto(aux, autos);
+    }
+
+
+
+}
+
+void egreso(eAuto autos[], ePropietario duenio[])
+{
+    int i, flag = 0, lugar, aux2, tiempo;
+    char aux[10];
+    printf("Ingrese la patente del auto a retirar: ");
+    gets(aux);
+    fflush(stdin);
+    lugar = buscarAuto(aux, autos);
+    printf("Ingrese el horario de salida.");
+    scanf("%d", &aux2);
+    fflush(stdin);
+
+    while(aux2 < autos[lugar].hora || aux2 > 24)
+    {
+        printf("El auto no puede estar mas de un dia estacionado. Reingrese");
+        scanf("%d", &aux2);
+    }
+    for(i=0; i<T; i++)
+    {
+        if(autos[lugar].id == duenio[i].id)
+        {
+            duenio[i].estado == 0;
+            break;
+        }
+    }
+    tiempo = aux2 - autos[lugar].hora;
+    printf("El tiempo de estadia es de %d horas", tiempo);
+    ticket(autos, duenio, lugar, tiempo);
+
+}
+
+void ticket(eAuto autos[], ePropietario duenio[], int lugar, int estadia)
+{
+    int i, aux, aux2 = estadia;
+    for(i=0; i<T; i++)
+    {
+        if(duenio[i].id == autos[lugar].id)
+        {
+            aux = i;
+            break;
+        }
+
+    }
+
+    if(strcmp("ALPHA_ROMEO", autos[lugar].marca) == 0)
+    {
+        aux2 = estadia * 150;
+    }
+
+    if(strcmp("FERRARI", autos[lugar].marca) == 0)
+    {
+        aux2 = estadia * 175;
+    }
+
+    if(strcmp("AUDI", autos[lugar].marca) == 0)
+    {
+        aux2 = estadia * 200;
+    }
+
+    if(strcmp("OTRO", autos[lugar].marca) == 0)
+    {
+        aux2 = estadia * 250;
+    }
+
+
+    printf("\nTicket:\nNombre del propietario: %s\nPatente del auto: %s\nMarca del auto: %s\nValor de la estadia: %d\n", duenio[aux].nombre, autos[lugar].patente, autos[lugar].marca, aux2);
+
+}
+
+void informar(ePropietario duenio[], eAuto autos[])
+{
+    int i, lugar;
+    printf("Hora: Patente: Nombre: Marca:\n\n");
+    for(i=0; i<T; i++)
+    {
+        if(autos[i].id == duenio[i].id && duenio[i].estado == 1)
+        {
+
+            printf("%d \t", autos[i].hora);
+            printf("%s \t", autos[i].patente);
+            printf("%s \t", duenio[i].nombre);
+            printf("%s \n", autos[i].marca);
+
+        }
+
+    }
+}
+
+
+
+
+
+void  ordenar(eAuto autos[])
+{
+    int i, j;
+    eAuto aux;
+
+    for(i=0; i<T-1; i++)
+    {
+        for(j=i+1; j<T; j++)
+        {
+            if(autos[i].hora < autos[j].hora)
+            {
+                aux = autos[i];
+                autos[i] = autos[j];
+                autos[j] = aux;
+            }
+        }
+    }
+}
+
+

@@ -11,15 +11,31 @@
 	<stdio.h>
 	<stdlib.h>
 
-1494424864 source:c:\users\alumno\desktop\diaz.gonzalo\estacionamiento.c
+1494515257 source:c:\users\alumno\desktop\diaz.gonzalo\estacionamiento.c
 	"estacionamiento.h"
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
 
-1494426125 c:\users\alumno\desktop\diaz.gonzalo\estacionamiento.h
+1494512203 c:\users\alumno\desktop\diaz.gonzalo\estacionamiento.h
 
-1494424879 source:c:\users\alumno\desktop\diaz.gonzalo\main.c
+1494514026 source:c:\users\alumno\desktop\diaz.gonzalo\main.c
 	<stdio.h>
 	<stdlib.h>
+	<string.h>
+	"estacionamiento.h"
+
+1494478203 source:c:\users\administrador\desktop\ejercicios-master\diaz.gonzalo\estacionamiento.c
+	"estacionamiento.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1494477856 c:\users\administrador\desktop\ejercicios-master\diaz.gonzalo\estacionamiento.h
+
+1494478330 source:c:\users\administrador\desktop\ejercicios-master\diaz.gonzalo\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
 	"estacionamiento.h"
 
