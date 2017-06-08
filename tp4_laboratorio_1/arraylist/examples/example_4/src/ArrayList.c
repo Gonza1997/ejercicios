@@ -69,25 +69,34 @@ ArrayList* al_newArrayList(void)
  */
 int al_add(ArrayList* this, void* pElement)
 {
-    int returnAux = -1;
+    int returnAux = -1, flag = 0;
     void* aux;
 
-    if(this->pElements != NULL && pElement != NULL)
+    if(this != NULL && pElement != NULL)
     {
         if(this->size == this->reservedSize)
         {
-            aux = realloc(this->pElements, sizeof(this->reservedSize)+AL_INCREMENT);
+            aux = realloc(this->pElements, (sizeof(void*)*(this->reservedSize + AL_INCREMENT)));
+
             if(aux != NULL)
             {
                 this->pElements = aux;
-                this->reservedSize = this->reservedSize + 10;
+                this->reservedSize = this->reservedSize + AL_INCREMENT;
+            }
+            else
+            {
+                flag = 1;
             }
 
         }
+        if(flag != 1)
+        {
+            this->pElements[this->size] = pElement;
+            this->size=this->size+1;
+            returnAux = 0;
+        }
 
-        this->pElements[this->size] = pElement;
-        this->size=this->size+1;
-        returnAux = 0;
+
 
     }
 
